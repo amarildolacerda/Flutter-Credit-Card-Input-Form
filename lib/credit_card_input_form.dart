@@ -29,7 +29,7 @@ class CreditCardInputForm extends StatelessWidget {
       this.backCardDecoration,
       this.showResetButton = true,
       this.customCaptions,
-      this.onCardModelChanged,
+      
       this.nextButtonTextStyle = kDefaultButtonTextStyle,
       this.prevButtonTextStyle = kDefaultButtonTextStyle,
       this.resetButtonTextStyle = kDefaultButtonTextStyle,
@@ -37,7 +37,6 @@ class CreditCardInputForm extends StatelessWidget {
       this.prevButtonDecoration = defaultNextPrevButtonDecoration,
       this.resetButtonDecoration = defaultResetButtonDecoration});
 
-  final CardInfoCallback onCardModelChanged;
   final Function onStateChange;
   final double cardHeight;
   final BoxDecoration frontCardDecoration;
@@ -84,7 +83,6 @@ class CreditCardInputForm extends StatelessWidget {
         nextButtonDecoration: nextButtonDecoration,
         resetButtonDecoration: resetButtonDecoration,
         prevButtonTextStyle: prevButtonTextStyle,
-        onCardModelChanged: onCardModelChanged,
         nextButtonTextStyle: nextButtonTextStyle,
         resetButtonTextStyle: resetButtonTextStyle,
       ),
