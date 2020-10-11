@@ -1,6 +1,6 @@
 name: credit_card_input_form
 description: This package provides visually beautiful UX through animation of credit card information input form.
-version: 2.0.3
+version: 2.0.3+1
 homepage: https://github.com/Origogi/Flutter-Credit-Card-Input-Form
 
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.0
   provider: ^4.3.2+2
   flip_card: ^0.4.4
 
