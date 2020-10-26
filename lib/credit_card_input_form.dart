@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 
 import 'constants/captions.dart';
 import 'constants/constanst.dart';
+import 'dart:async';
 
 typedef CardInfoCallback = void Function(
     InputState currentState, CardInfo cardInfo);
@@ -24,12 +25,12 @@ typedef CardInfoCallback = void Function(
 class CreditCardInputForm extends StatelessWidget {
   CreditCardInputForm(
       {this.onStateChange,
+      this.initialValue,
       this.cardHeight,
       this.frontCardDecoration,
       this.backCardDecoration,
       this.showResetButton = true,
       this.customCaptions,
-      
       this.nextButtonTextStyle = kDefaultButtonTextStyle,
       this.prevButtonTextStyle = kDefaultButtonTextStyle,
       this.resetButtonTextStyle = kDefaultButtonTextStyle,
@@ -37,6 +38,7 @@ class CreditCardInputForm extends StatelessWidget {
       this.prevButtonDecoration = defaultNextPrevButtonDecoration,
       this.resetButtonDecoration = defaultResetButtonDecoration});
 
+  final CardInfo initialValue;
   final Function onStateChange;
   final double cardHeight;
   final BoxDecoration frontCardDecoration;
@@ -74,6 +76,7 @@ class CreditCardInputForm extends StatelessWidget {
         ),
       ],
       child: CreditCardInputImpl(
+        initialValue: initialValue,
         onCardModelChanged: onStateChange,
         backDecoration: backCardDecoration,
         frontDecoration: frontCardDecoration,
@@ -102,9 +105,11 @@ class CreditCardInputImpl extends StatefulWidget {
   final TextStyle nextButtonTextStyle;
   final TextStyle prevButtonTextStyle;
   final TextStyle resetButtonTextStyle;
+  final CardInfo initialValue;
 
   CreditCardInputImpl(
-      {this.onCardModelChanged,
+      {this.initialValue,
+      this.onCardModelChanged,
       this.cardHeight,
       this.showResetButton,
       this.frontDecoration,
@@ -132,6 +137,25 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
   final cardRatio = 16.0 / 9.0;
 
   var _currentState = InputState.NUMBER;
+
+  initValues(context) {
+    if (widget.initialValue != null) {
+      Provider.of<CardNameProvider>(context).setName(widget.initialValue.name);
+      Provider.of<CardNumberProvider>(context)
+          .setNumber(widget.initialValue.cardNumber);
+      Provider.of<CardValidProvider>(context)
+          .setValid(widget.initialValue.validate);
+      Provider.of<CardCVVProvider>(context).setCVV(widget.initialValue.cvv);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.run(() {
+      initValues(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
