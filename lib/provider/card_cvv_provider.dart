@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CardCVVProvider with ChangeNotifier {
-  var _cardCVV = '';
+  String? _cardCVV = '';
 
-  void setCVV(String cvv) {
+  void setCVV(String? cvv) {
     _cardCVV = cvv;
     notifyListeners();
   }

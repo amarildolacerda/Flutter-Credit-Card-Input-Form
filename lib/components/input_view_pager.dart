@@ -66,13 +66,13 @@ class InputViewPager extends StatelessWidget {
 }
 
 class InputForm extends StatefulWidget {
-  final String title;
-  final int index;
-  final PageController pageController;
-  final FocusNode focusNode;
+  final String? title;
+  final int? index;
+  final PageController? pageController;
+  final FocusNode? focusNode;
 
   InputForm(
-      {@required this.title, this.index, this.pageController, this.focusNode});
+      {required this.title, this.index, this.pageController, this.focusNode});
 
   @override
   _InputFormState createState() => _InputFormState();
@@ -81,13 +81,13 @@ class InputForm extends StatefulWidget {
 class _InputFormState extends State<InputForm> {
   var opacicy = 0.3;
 
-  int maxLength;
-  TextInputType textInputType;
+  int? maxLength;
+  TextInputType? textInputType;
   TextEditingController textController = TextEditingController();
 
   void onChange() {
     setState(() {
-      if (widget.index == widget.pageController.page.round()) {
+      if (widget.index == widget.pageController!.page!.round()) {
         opacicy = 1;
       } else {
         opacicy = 0.3;
@@ -95,7 +95,7 @@ class _InputFormState extends State<InputForm> {
     });
   }
 
-  String value;
+  String? value;
 
   @override
   void initState() {
@@ -105,7 +105,7 @@ class _InputFormState extends State<InputForm> {
       opacicy = 1;
     }
 
-    widget.pageController.addListener(onChange);
+    widget.pageController!.addListener(onChange);
 
     if (widget.index == InputState.NUMBER.index) {
       maxLength = 19;
@@ -131,7 +131,7 @@ class _InputFormState extends State<InputForm> {
 
   @override
   void dispose() {
-    widget.pageController.removeListener(onChange);
+    widget.pageController!.removeListener(onChange);
 
     super.dispose();
   }
@@ -140,7 +140,7 @@ class _InputFormState extends State<InputForm> {
 
   @override
   Widget build(BuildContext context) {
-    String textValue = "";
+    String? textValue = "";
 
     if (widget.index == InputState.NUMBER.index) {
       textValue =
@@ -162,7 +162,7 @@ class _InputFormState extends State<InputForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              widget.title,
+              widget.title!,
               style: TextStyle(fontSize: 12, color: Colors.black38),
             ),
             SizedBox(
@@ -174,7 +174,7 @@ class _InputFormState extends State<InputForm> {
                 ..value = textController.value.copyWith(
                   text: textValue,
                   selection: TextSelection.fromPosition(
-                    TextPosition(offset: textValue.length),
+                    TextPosition(offset: textValue!.length),
                   ),
                 ),
               focusNode: widget.focusNode,

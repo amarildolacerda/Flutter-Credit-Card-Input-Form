@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CardNameProvider with ChangeNotifier {
-  var _cardName = '';
+  String? _cardName = '';
 
-  void setName(String name) {
+  void setName(String? name) {
     _cardName = name;
     notifyListeners();
   }

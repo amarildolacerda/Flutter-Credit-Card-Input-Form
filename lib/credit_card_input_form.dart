@@ -38,13 +38,13 @@ class CreditCardInputForm extends StatelessWidget {
       this.prevButtonDecoration = defaultNextPrevButtonDecoration,
       this.resetButtonDecoration = defaultResetButtonDecoration});
 
-  final CardInfo initialValue;
-  final Function onStateChange;
-  final double cardHeight;
-  final BoxDecoration frontCardDecoration;
-  final BoxDecoration backCardDecoration;
+  final CardInfo? initialValue;
+  final Function? onStateChange;
+  final double? cardHeight;
+  final BoxDecoration? frontCardDecoration;
+  final BoxDecoration? backCardDecoration;
   final bool showResetButton;
-  final Map<String, String> customCaptions;
+  final Map<String, String>? customCaptions;
   final BoxDecoration nextButtonDecoration;
   final BoxDecoration prevButtonDecoration;
   final BoxDecoration resetButtonDecoration;
@@ -77,7 +77,7 @@ class CreditCardInputForm extends StatelessWidget {
       ],
       child: CreditCardInputImpl(
         initialValue: initialValue,
-        onCardModelChanged: onStateChange,
+        onCardModelChanged: onStateChange as void Function(InputState, CardInfo)?,
         backDecoration: backCardDecoration,
         frontDecoration: frontCardDecoration,
         cardHeight: cardHeight,
@@ -94,18 +94,18 @@ class CreditCardInputForm extends StatelessWidget {
 }
 
 class CreditCardInputImpl extends StatefulWidget {
-  final CardInfoCallback onCardModelChanged;
-  final double cardHeight;
-  final BoxDecoration frontDecoration;
-  final BoxDecoration backDecoration;
-  final bool showResetButton;
-  final BoxDecoration nextButtonDecoration;
-  final BoxDecoration prevButtonDecoration;
-  final BoxDecoration resetButtonDecoration;
-  final TextStyle nextButtonTextStyle;
-  final TextStyle prevButtonTextStyle;
-  final TextStyle resetButtonTextStyle;
-  final CardInfo initialValue;
+  final CardInfoCallback? onCardModelChanged;
+  final double? cardHeight;
+  final BoxDecoration? frontDecoration;
+  final BoxDecoration? backDecoration;
+  final bool? showResetButton;
+  final BoxDecoration? nextButtonDecoration;
+  final BoxDecoration? prevButtonDecoration;
+  final BoxDecoration? resetButtonDecoration;
+  final TextStyle? nextButtonTextStyle;
+  final TextStyle? prevButtonTextStyle;
+  final TextStyle? resetButtonTextStyle;
+  final CardInfo? initialValue;
 
   CreditCardInputImpl(
       {this.initialValue,
@@ -140,12 +140,12 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
 
   initValues(context) {
     if (widget.initialValue != null) {
-      Provider.of<CardNameProvider>(context).setName(widget.initialValue.name);
+      Provider.of<CardNameProvider>(context).setName(widget.initialValue!.name);
       Provider.of<CardNumberProvider>(context)
-          .setNumber(widget.initialValue.cardNumber);
+          .setNumber(widget.initialValue!.cardNumber!);
       Provider.of<CardValidProvider>(context)
-          .setValid(widget.initialValue.validate);
-      Provider.of<CardCVVProvider>(context).setCVV(widget.initialValue.cvv);
+          .setValid(widget.initialValue!.validate!);
+      Provider.of<CardCVVProvider>(context).setCVV(widget.initialValue!.cvv);
     }
   }
 
@@ -175,7 +175,7 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
       _currentState = newState;
 
       Future(() {
-        widget.onCardModelChanged(
+        widget.onCardModelChanged!(
             _currentState,
             CardInfo(
                 name: name, cardNumber: cardNumber, validate: valid, cvv: cvv));
@@ -185,8 +185,8 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
     double cardWidth =
         MediaQuery.of(context).size.width - (2 * cardHorizontalpadding);
 
-    double cardHeight;
-    if (widget.cardHeight != null && widget.cardHeight > 0) {
+    double? cardHeight;
+    if (widget.cardHeight != null && widget.cardHeight! > 0) {
       cardHeight = widget.cardHeight;
     } else {
       cardHeight = cardWidth / cardRatio;
@@ -225,7 +225,7 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
             Align(
                 alignment: Alignment.center,
                 child: AnimatedOpacity(
-                    opacity: widget.showResetButton &&
+                    opacity: widget.showResetButton! &&
                             _currentState == InputState.DONE
                         ? 1
                         : 0,
@@ -236,7 +236,7 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
                         decoration: widget.resetButtonDecoration,
                         textStyle: widget.resetButtonTextStyle,
                         onTap: () {
-                          if (!widget.showResetButton) {
+                          if (!widget.showResetButton!) {
                             return;
                           }
 
@@ -246,8 +246,8 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeIn);
 
-                          if (!cardKey.currentState.isFront) {
-                            cardKey.currentState.toggleCard();
+                          if (!cardKey.currentState!.isFront) {
+                            cardKey.currentState!.toggleCard();
                           }
                         },
                       ),
@@ -277,7 +277,7 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
                   }
 
                   if (InputState.CVV == _currentState) {
-                    cardKey.currentState.toggleCard();
+                    cardKey.currentState!.toggleCard();
                   }
                   Provider.of<StateProvider>(context, listen: false)
                       .movePrevState();
@@ -304,7 +304,7 @@ class _CreditCardInputImplState extends State<CreditCardInputImpl> {
                   }
 
                   if (InputState.VALIDATE == _currentState) {
-                    cardKey.currentState.toggleCard();
+                    cardKey.currentState!.toggleCard();
                   }
 
                   Provider.of<StateProvider>(context, listen: false)
